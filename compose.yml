@@ -1,0 +1,33 @@
+services:
+  inventory_backend:
+    container_name: inventory_backend
+    build:
+      context: ./backend
+      dockerfile: backend.dockerfile
+    image: izzy850/inventory_backend
+    ports:
+      - 3000:3000
+    environment:
+      - PG_DB=inventory_db
+      - PG_USER=izzy850
+      - PG_PASSWORD=postgres
+      - PG_HOST=inventory_db
+    depends_on:
+      - inventory_db
+    restart: always
+
+  inventory_db:
+    container_name: inventory_db
+    image: postgres:16
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=inventory_db
+      - POSTGRES_USER=izzy850
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - inventory_db_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  inventory_db_data: {}

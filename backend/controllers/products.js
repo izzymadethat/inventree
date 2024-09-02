@@ -1,12 +1,17 @@
-const { Product } = require("../models");
+const { Product, Category } = require("../models");
 
 // CRUD controls for Products
+
+const category = {
+  model: Category,
+  as: "category",
+};
 
 // get all products
 exports.getAllProducts = async (req, res, next) => {
   try {
     const products = await Product.findAll({
-      include: ["category"],
+      include: [category],
     });
     res.status(200).json({ products: products });
   } catch (error) {
@@ -20,7 +25,7 @@ exports.getProductById = async (req, res, next) => {
     const uid = req.params.id;
 
     const product = await Product.findByPk(uid, {
-      include: ["category"],
+      include: [category],
     });
 
     if (!product) {
@@ -69,7 +74,9 @@ exports.updateProduct = async (req, res, next) => {
       return res.status(404).json({ message: "Category not found" });
     }
 
-    const product = await Product.findByPk(uid);
+    const product = await Product.findByPk(uid, {
+      include: [category],
+    });
     if (!product) {
       res.status(404).json({ message: "Product not found" });
     }
