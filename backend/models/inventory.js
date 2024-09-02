@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 const db = require("../utils/database");
 
-const Inventory = db.define("inventory", {
+const Inventory = db.define("Inventory", {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
